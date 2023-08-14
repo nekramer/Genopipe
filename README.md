@@ -29,11 +29,10 @@ Installing GenomeStudio:
 4. To export a PLINK report, click **Analysis > Reports > Custom Report > PLINK**. A **map** and **ped** file should be generated. 
 
 ## Workflow
-1. Clone this entire repo into working directory and entire `Genopipe` subdirectory:
+1. Clone this entire repo into working directory:
 
     ```bash
-    git clone https://github.com/nekramer/CQTL.git
-    cd CQTL/Genopipe
+    git clone https://github.com/nekramer/Genopipe.git
     ```
 
 2. Edit the comma-separated `geno.csv` with the project name, batch name, PLINK map/ped file prefix, and the path to these files under the `Genotyping_Directory`
@@ -70,7 +69,7 @@ found under the Manifest directory.
 
 After running these steps the pipeline will produce the following key files:
 - `output/ancestry/ancestry.pdf`: A plot of PC1 vs. PC2 of data merged with reference, colored by population.
-- `output/imputation/{group}_chr{chr}.recode.vcf.gz`: Gzipped vcf files, separated by chromosome, which are prepared for impututation.
+- `output/imputation/{group}_chr{chr}.recode.vcf.gz`: Gzipped vcf files, separated by chromosome, which are prepared for imputation.
 
 5. Impute data with imputation method of choice (i.e. Michigan Imputation Server) using an appropriate reference file.
 
