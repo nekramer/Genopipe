@@ -1,0 +1,4 @@
+Genopipe-*.out
+.snakemake/*
+env/*
+output/*

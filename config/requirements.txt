@@ -1,2 +1,3 @@
 snakemake==5.10.0
 snpflip
+pandas

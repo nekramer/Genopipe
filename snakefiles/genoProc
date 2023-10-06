@@ -64,10 +64,10 @@ rule removeSamples:
         temp(expand("output/binary/{name}_filter{ext}", name = genos['Batch'], ext = [".bed",".bim",".fam"])),
         removeFile=temp("remove.plink")
     params:
-        remove = config['remove']
+        removeSamples = config['remove']
     run:
         # Generate file for removal of variants from plink
-        subprocess.call(['python3', 'scripts/removeSamples.py', params.remove])
+        subprocess.call(['python3', 'scripts/removeSamples.py', params.removeSamples])
 
         # Attempt to remove from all files
         for row in genos.itertuples():
@@ -207,6 +207,7 @@ rule snpFlip:
         sequence = config['sequence']
     shell:
         """
+        module load python/3.9.6
         mkdir -p output/imputation
         snpflip --fasta-genome={params.sequence} --bim={params.prefix}.bim --output-prefix=output/imputation/snpflip
         """
@@ -370,6 +371,7 @@ rule setA1:
         out = "output/ancestry/logs/" + mergeName + "_ldautosome_A1.out"
     shell:
         """
+        module load python/3.9.6
         ## Grab A1 info from reference data
         awk '{{print $1":"$4" "$5}}' output/ancestry/refPrune.bim > output/ancestry/setA1.txt
         
@@ -398,7 +400,7 @@ rule mismatchAlleles:
         out2 = "output/ancestry/logs/refPrune_mismatch.out"
     shell:
         """
-        module load r/4.1.0
+        module load r/4.2.2
         Rscript scripts/mismatchAlleles.r output/ancestry/{params.outpre}_ldautosome_A1.bim output/ancestry/refPrune.bim
 
         plink --bfile output/ancestry/{params.outpre}_ldautosome_A1 --exclude output/ancestry/data_missnp.txt --make-bed --out output/ancestry/{params.outpre}_ldautosome_A1_final 1> {log.out1}
@@ -447,7 +449,8 @@ rule convertEigenstrat:
         "output/ancestry/" + mergeName + "_ref_merge.snp",
         "output/ancestry/" + mergeName + "_ref_merge.ind"
     params:
-        prefix = "output/ancestry/" + mergeName + "_ref_merge"
+        prefix = "output/ancestry/" + mergeName + "_ref_merge",
+        eigensoft = config['eigensoft']
     shell:
         """
         echo "genotypename: "{input.ped} >> output/ancestry/par.PED.EIGENSTRAT
@@ -459,8 +462,7 @@ rule convertEigenstrat:
         echo "indivoutname: "{params.prefix}".ind" >> output/ancestry/par.PED.EIGENSTRAT
         echo "familynames: NO" >> output/ancestry/par.PED.EIGENSTRAT
 
-        module load eigensoft
-        convertf -p output/ancestry/par.PED.EIGENSTRAT
+        {params.eigensoft}/convertf -p output/ancestry/par.PED.EIGENSTRAT
 
         rm output/ancestry/par.PED.EIGENSTRAT
         """
@@ -473,12 +475,12 @@ rule runEigenstrat:
         "output/ancestry/" + mergeName + "_ref_merge.eval"
     params:
         prefix = "output/ancestry/" + mergeName + "_ref_merge",
-        outpre = mergeName
+        outpre = mergeName,
+        eigensoft = config['eigensoft']
     shell:
         """
-        module load eigensoft
         ## Run smartpca with outlier removal turned off
-        smartpca.perl -i {params.prefix}.eigenstratgeno -a {params.prefix}.snp -b {params.prefix}.ind -o {params.prefix}.pca -p {params.prefix}.plot -e {params.prefix}.eval -l {params.prefix}.log -m 0
+        {params.eigensoft}/smartpca.perl -i {params.prefix}.eigenstratgeno -a {params.prefix}.snp -b {params.prefix}.ind -o {params.prefix}.pca -p {params.prefix}.plot -e {params.prefix}.eval -l {params.prefix}.log -m 0
 
         mv {params.prefix}.log output/ancestry/logs/{params.outpre}_smartpca.err
 
@@ -501,7 +503,7 @@ rule plotAncestry:
     shell:
         """
         mkdir -p output/ancestry
-        module load r
+        module load r/4.2.2
         Rscript scripts/getAncestry.r {params.pca} {params.panel} {params.name} {output.plot} {output.predictions}
         """
 

@@ -55,11 +55,27 @@ column. The names in the `Proj` and `Batch` columns will be used to create a gro
     panel: '/proj/phanstiel_lab/References/genomes/1000G/GRCh37/1000G_phase3.panel' # Path to panel file of above population reference data. Must have the columns         `sample`, `pop`, `super_pop`, and `gender`.
     sequence: '/proj/phanstiel_lab/References/genomes/hg19/Sequence/hg19.fa' # Path to reference sequence fasta file.
 
+    ## Eigensoft software path
+    eigensoft: '/proj/phanstiel_lab/software/EIGENSOFT/EIG-6.1.4/bin' # Path to EIGENSOFT software directory.
+
     ## Additional options
     pop_name: 'CQTL' # Name of data 'population' to use as the label in ancestry PCA plot.
     ```
 To check the genome build of raw genotyping data obtained via a GenomeStudio project, check the `GenomeBuild` column of the .csv file
 found under the Manifest directory.
+
+Note: This pipeline requires an installation of Eigensoft. This software can be downloaded from https://github.com/DReichLab/EIG. To build
+the software on UNC Longleaf follow these steps:
+
+    ```
+    unzip v8.0.0.zip
+    cd EIG-8.0.0/src
+    make clobber
+    module add openblas
+    make all OPENBLAS=/nas/longleaf/apps/openblas/0.2.19
+    make install
+    ```
+Then, update the path to the `smartpca` command on line 58 of `EIG-8.0.0/bin/smartpca.perl`.
 
 4. Submit the first workflow with `sbatch`:
 

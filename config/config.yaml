@@ -13,6 +13,10 @@ ref: '/proj/phanstiel_lab/References/genomes/1000G/GRCh37/1000G_phase3_chrALL_bi
 panel: '/proj/phanstiel_lab/References/genomes/1000G/GRCh37/1000G_phase3.panel' # Path to panel file of above population reference data. Must have the columns `sample`, `pop`, `super_pop`, and `gender`.
 sequence: '/proj/phanstiel_lab/References/genomes/hg19/Sequence/hg19.fa' # Path to reference sequence fasta file.
 
+## Eigensoft software path
+eigensoft: '/proj/phanstiel_lab/software/EIGENSOFT/EIG-6.1.4/bin' # Path to EIGENSOFT software directory.
+
+
 ## Additional options
 pop_name: 'CQTL' # Name of data 'population' to use as the label in ancestry PCA plot.
 
