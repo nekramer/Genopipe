@@ -9,12 +9,12 @@ hwe: .000001 # PLINK --hwe: Hardy-Weinberg equilibrium; Exclude markers that fai
 remove: 'remove.txt' # Text file listing which, if any, samples to remove from data and which batch they should be removed from.
 
 ## Genome-specific reference parameters
-ref: '/proj/phanstiel_lab/References/genomes/1000G/GRCh37/1000G_phase3_chrALL_biallelic' # Path to population reference data in PLINK binary format (.bed, .bim, .fam files), all autosomes merged.
+ref: '/proj/phanstiel_lab/References/genomes/1000G/GRCh37/ALL/biallelic_snps/1000G_phase3_chrALL_biallelic' # Path to population reference data in PLINK binary format (.bed, .bim, .fam files), all autosomes merged.
 panel: '/proj/phanstiel_lab/References/genomes/1000G/GRCh37/1000G_phase3.panel' # Path to panel file of above population reference data. Must have the columns `sample`, `pop`, `super_pop`, and `gender`.
 sequence: '/proj/phanstiel_lab/References/genomes/hg19/Sequence/hg19.fa' # Path to reference sequence fasta file.
 
 ## Eigensoft software path
-eigensoft: '/proj/phanstiel_lab/software/EIGENSOFT/EIG-6.1.4/bin' # Path to EIGENSOFT software directory.
+eigensoft: '/work/users/n/e/nekramer/software/EIG-8.0.0/bin' # Path to EIGENSOFT software directory.
 
 
 ## Additional options
